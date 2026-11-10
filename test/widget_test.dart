@@ -1,30 +1,47 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:life_pilot/main.dart';
+import 'package:life_pilot/app/app.dart';
+import 'package:life_pilot/core/constants/app_strings.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('Splash screen shows app name and tagline', (tester) async {
+    await tester.pumpWidget(
+      const ProviderScope(child: LifePilotApp()),
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Initial frame — splash should be visible.
+    expect(find.text(AppStrings.appName), findsOneWidget);
+    expect(find.text(AppStrings.tagline), findsOneWidget);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('Splash navigates to onboarding after delay', (tester) async {
+    await tester.pumpWidget(
+      const ProviderScope(child: LifePilotApp()),
+    );
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Advance past splash duration + animation.
+    await tester.pumpAndSettle(const Duration(seconds: 4));
+
+    // Should now be on onboarding — look for the skip button.
+    expect(find.text(AppStrings.skip), findsOneWidget);
+    expect(find.text(AppStrings.onboardingTitle1), findsOneWidget);
+  });
+
+  testWidgets('Onboarding skip navigates to dashboard', (tester) async {
+    await tester.pumpWidget(
+      const ProviderScope(child: LifePilotApp()),
+    );
+
+    // Get past splash.
+    await tester.pumpAndSettle(const Duration(seconds: 4));
+
+    // Tap skip.
+    await tester.tap(find.text(AppStrings.skip));
+    await tester.pumpAndSettle();
+
+    // Should be on dashboard — greeting visible.
+    expect(find.textContaining('👋'), findsOneWidget);
   });
 }
