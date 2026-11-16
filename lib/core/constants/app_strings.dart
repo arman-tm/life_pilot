@@ -21,9 +21,44 @@ abstract final class AppStrings {
   static const skip = 'Skip';
 
   // ── Dashboard ──
-  static const greeting = 'Hello there! 👋';
-  static const dashboardSubtitle = 'What would you like to accomplish today?';
+  static const heroTitle = 'Your day, under control.';
+  static const heroSubtitle =
+      'Let your AI companion help you make today productive.';
+
+  // ── AI Assistant ──
+  static const askLifePilot = 'Ask LifePilot';
+  static const aiAssistantDescription =
+      'Get instant help with planning, organizing, and managing your daily life.';
+  static const aiInputHint = 'What can I help you with today?';
+
+  // ── Quick Actions ──
+  static const myTasks = 'My Tasks';
+  static const calendar = 'Calendar';
+  static const reminders = 'Reminders';
+  static const aiPlanner = 'AI Planner';
+
+  // ── Overview ──
+  static const todaysOverview = "Today's Overview";
+  static const totalTasks = 'Total Tasks';
+  static const completed = 'Completed';
+  static const upcoming = 'Upcoming';
+  static const pending = 'Pending';
+
+  // ── Insight ──
+  static const dailyInsight = 'Daily Insight';
+  static const insightQuote =
+      'Small steps today create meaningful progress tomorrow.';
+
+  // ── Navigation ──
+  static const home = 'Home';
+  static const assistant = 'Assistant';
+  static const planner = 'Planner';
+  static const activity = 'Activity';
+  static const profile = 'Profile';
+
+  // ── Placeholder ──
   static const comingSoon = 'Coming Soon';
   static const featurePlaceholder =
       'This feature is under development and will be available in a future update.';
+  static const sampleData = 'Sample data';
 }

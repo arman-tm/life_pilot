@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 /// LifePilot design tokens — color palette, spacing, radius, durations.
 abstract final class AppColors {
-  // ── Primary Palette ──
-  static const darkNavy = Color(0xFF0A1628);
-  static const deepBlack = Color(0xFF050A12);
-  static const electricBlue = Color(0xFF2979FF);
-  static const electricBlueLight = Color(0xFF5C9AFF);
-  static const electricBlueDark = Color(0xFF0056CB);
+  // ── Primary Palette (Phase 02 refined) ──
+  static const darkNavy = Color(0xFF0B1020);
+  static const deepBlack = Color(0xFF080D18);
+  static const electricBlue = Color(0xFF4285FF);
+  static const electricBlueLight = Color(0xFF78A9FF);
+  static const electricBlueDark = Color(0xFF1A5FE6);
   static const white = Color(0xFFFFFFFF);
-  static const softGray = Color(0xFFB0BEC5);
+  static const softGray = Color(0xFF929BAA);
 
   // ── Neutral Grays ──
   static const gray50 = Color(0xFFFAFAFA);
@@ -24,19 +24,27 @@ abstract final class AppColors {
   static const gray900 = Color(0xFF212121);
 
   // ── Surface (Dark) ──
-  static const surfaceDark = Color(0xFF0D1B2A);
-  static const surfaceDarkElevated = Color(0xFF122240);
-  static const cardDark = Color(0xFF152238);
+  static const surfaceDark = Color(0xFF0E1525);
+  static const surfaceDarkElevated = Color(0xFF141D30);
+  static const cardDark = Color(0xFF121B2E);
+  static const cardDarkBorder = Color(0xFF1C2840);
 
   // ── Surface (Light) ──
-  static const surfaceLight = Color(0xFFF8F9FB);
+  static const surfaceLight = Color(0xFFF7F8FA);
+  static const surfaceLightElevated = Color(0xFFFFFFFF);
   static const cardLight = Color(0xFFFFFFFF);
+  static const cardLightBorder = Color(0xFFE8ECF1);
 
   // ── Semantic ──
   static const success = Color(0xFF00E676);
+  static const successDark = Color(0xFF00C853);
   static const warning = Color(0xFFFFAB00);
   static const error = Color(0xFFFF5252);
   static const info = Color(0xFF40C4FF);
+
+  // ── Accent gradients ──
+  static const blueGradientStart = Color(0xFF4285FF);
+  static const blueGradientEnd = Color(0xFF1A5FE6);
 }
 
 abstract final class AppSpacing {
@@ -50,6 +58,7 @@ abstract final class AppSpacing {
 }
 
 abstract final class AppRadius {
+  static const double xs = 6;
   static const double sm = 8;
   static const double md = 12;
   static const double lg = 16;
@@ -62,4 +71,5 @@ abstract final class AppDurations {
   static const medium = Duration(milliseconds: 400);
   static const slow = Duration(milliseconds: 600);
   static const splash = Duration(milliseconds: 2500);
+  static const stagger = Duration(milliseconds: 80);
 }
