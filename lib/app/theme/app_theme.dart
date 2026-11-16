@@ -17,6 +17,7 @@ abstract final class AppTheme {
       onSecondary: AppColors.deepBlack,
       surface: AppColors.surfaceDark,
       onSurface: AppColors.white,
+      surfaceContainerHighest: AppColors.cardDark,
       error: AppColors.error,
       onError: AppColors.white,
     );
@@ -30,6 +31,7 @@ abstract final class AppTheme {
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        scrolledUnderElevation: 0,
         centerTitle: true,
         titleTextStyle: GoogleFonts.inter(
           fontSize: 18,
@@ -42,6 +44,7 @@ abstract final class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.lg),
+          side: const BorderSide(color: AppColors.cardDarkBorder, width: 0.5),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -62,6 +65,23 @@ abstract final class AppTheme {
           ),
         ),
       ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.electricBlue,
+          side: const BorderSide(color: AppColors.cardDarkBorder),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.md,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.md),
+          ),
+          textStyle: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.electricBlue,
@@ -71,10 +91,19 @@ abstract final class AppTheme {
           ),
         ),
       ),
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: AppColors.surfaceDark,
+        indicatorColor: AppColors.electricBlue.withValues(alpha: 0.15),
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        labelTextStyle: WidgetStatePropertyAll(
+          GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.w500),
+        ),
+      ),
       iconTheme: const IconThemeData(color: AppColors.softGray),
       dividerTheme: const DividerThemeData(
-        color: AppColors.surfaceDarkElevated,
-        thickness: 1,
+        color: AppColors.cardDarkBorder,
+        thickness: 0.5,
       ),
     );
   }
@@ -91,6 +120,7 @@ abstract final class AppTheme {
       onSecondary: AppColors.white,
       surface: AppColors.surfaceLight,
       onSurface: AppColors.darkNavy,
+      surfaceContainerHighest: AppColors.cardLight,
       error: AppColors.error,
       onError: AppColors.white,
     );
@@ -104,6 +134,7 @@ abstract final class AppTheme {
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        scrolledUnderElevation: 0,
         centerTitle: true,
         titleTextStyle: GoogleFonts.inter(
           fontSize: 18,
@@ -117,7 +148,7 @@ abstract final class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          side: BorderSide(color: AppColors.gray200),
+          side: const BorderSide(color: AppColors.cardLightBorder, width: 0.5),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -138,6 +169,23 @@ abstract final class AppTheme {
           ),
         ),
       ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.electricBlue,
+          side: const BorderSide(color: AppColors.cardLightBorder),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.md,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.md),
+          ),
+          textStyle: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.electricBlue,
@@ -147,10 +195,19 @@ abstract final class AppTheme {
           ),
         ),
       ),
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: AppColors.surfaceLightElevated,
+        indicatorColor: AppColors.electricBlue.withValues(alpha: 0.1),
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        labelTextStyle: WidgetStatePropertyAll(
+          GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.w500),
+        ),
+      ),
       iconTheme: const IconThemeData(color: AppColors.gray700),
-      dividerTheme: DividerThemeData(
-        color: AppColors.gray200,
-        thickness: 1,
+      dividerTheme: const DividerThemeData(
+        color: AppColors.cardLightBorder,
+        thickness: 0.5,
       ),
     );
   }
@@ -219,6 +276,11 @@ abstract final class AppTheme {
       labelMedium: GoogleFonts.inter(
         fontSize: 12,
         fontWeight: FontWeight.w500,
+        color: muted,
+      ),
+      labelSmall: GoogleFonts.inter(
+        fontSize: 10,
+        fontWeight: FontWeight.w400,
         color: muted,
       ),
     );

@@ -1,95 +1,146 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/theme/app_design_tokens.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/utils/extensions.dart';
+import '../../shared/widgets/section_header.dart';
+import 'widgets/ai_assistant_card.dart';
+import 'widgets/daily_insight_card.dart';
+import 'widgets/dashboard_header.dart';
+import 'widgets/greeting_section.dart';
+import 'widgets/overview_grid.dart';
+import 'widgets/quick_actions_row.dart';
 
-/// Dashboard placeholder — the main hub after onboarding.
-class DashboardScreen extends StatelessWidget {
+/// Main dashboard — the home tab of the application.
+class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final isDark = context.theme.brightness == Brightness.dark;
-    final now = DateTime.now();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = context.isDark;
+    final padding = context.pagePadding;
 
     return Scaffold(
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            stops: const [0.0, 0.3],
+            stops: const [0.0, 0.35],
             colors: isDark
                 ? [AppColors.darkNavy, AppColors.deepBlack]
                 : [AppColors.surfaceLight, AppColors.white],
           ),
         ),
         child: SafeArea(
+          bottom: false,
           child: CustomScrollView(
             slivers: [
               // ── Header ──
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.lg,
-                    AppSpacing.lg,
-                    AppSpacing.lg,
-                    AppSpacing.sm,
+              SliverPadding(
+                padding: EdgeInsets.fromLTRB(padding, AppSpacing.md, padding, 0),
+                sliver: const SliverToBoxAdapter(child: DashboardHeader()),
+              ),
+
+              // ── Greeting / Hero ──
+              SliverPadding(
+                padding: EdgeInsets.fromLTRB(
+                  padding, AppSpacing.lg, padding, 0,
+                ),
+                sliver: const SliverToBoxAdapter(child: GreetingSection()),
+              ),
+
+              // ── AI Assistant Card ──
+              SliverPadding(
+                padding: EdgeInsets.fromLTRB(
+                  padding, AppSpacing.lg, padding, 0,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: AIAssistantCard(
+                    onTap: () => _showPlaceholder(context, AppStrings.assistant),
                   ),
+                ),
+              ),
+
+              // ── Quick Actions ──
+              SliverPadding(
+                padding: EdgeInsets.fromLTRB(
+                  padding, AppSpacing.lg, padding, 0,
+                ),
+                sliver: SliverToBoxAdapter(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildAppBar(context, isDark),
-                      const SizedBox(height: AppSpacing.lg),
-                      _buildGreeting(context, now),
+                      const SectionHeader(title: 'Quick Actions'),
+                      QuickActionsRow(
+                        actions: const [
+                          QuickActionData(
+                            label: AppStrings.myTasks,
+                            icon: Icons.task_alt_rounded,
+                            color: AppColors.electricBlue,
+                          ),
+                          QuickActionData(
+                            label: AppStrings.calendar,
+                            icon: Icons.calendar_month_rounded,
+                            color: AppColors.success,
+                          ),
+                          QuickActionData(
+                            label: AppStrings.reminders,
+                            icon: Icons.notifications_active_rounded,
+                            color: AppColors.warning,
+                          ),
+                          QuickActionData(
+                            label: AppStrings.aiPlanner,
+                            icon: Icons.auto_awesome_rounded,
+                            color: AppColors.info,
+                          ),
+                        ],
+                        onTap: (i) {
+                          const labels = [
+                            AppStrings.myTasks,
+                            AppStrings.calendar,
+                            AppStrings.reminders,
+                            AppStrings.aiPlanner,
+                          ];
+                          _showPlaceholder(context, labels[i]);
+                        },
+                      ),
                     ],
                   ),
                 ),
               ),
 
-              // ── Feature Placeholders ──
+              // ── Today's Overview ──
               SliverPadding(
-                padding: const EdgeInsets.all(AppSpacing.lg),
-                sliver: SliverGrid.count(
-                  crossAxisCount: context.isWide ? 3 : 2,
-                  mainAxisSpacing: AppSpacing.md,
-                  crossAxisSpacing: AppSpacing.md,
-                  childAspectRatio: 1.1,
-                  children: const [
-                    _FeatureCard(
-                      icon: Icons.chat_rounded,
-                      label: 'AI Chat',
-                    ),
-                    _FeatureCard(
-                      icon: Icons.calendar_month_rounded,
-                      label: 'Calendar',
-                    ),
-                    _FeatureCard(
-                      icon: Icons.task_alt_rounded,
-                      label: 'Tasks',
-                    ),
-                    _FeatureCard(
-                      icon: Icons.notifications_active_rounded,
-                      label: 'Reminders',
-                    ),
-                    _FeatureCard(
-                      icon: Icons.mic_rounded,
-                      label: 'Voice',
-                    ),
-                    _FeatureCard(
-                      icon: Icons.auto_awesome_rounded,
-                      label: 'Memory',
-                    ),
-                  ],
+                padding: EdgeInsets.fromLTRB(
+                  padding, AppSpacing.lg, padding, 0,
+                ),
+                sliver: const SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SectionHeader(title: AppStrings.todaysOverview),
+                      OverviewGrid(),
+                    ],
+                  ),
                 ),
               ),
 
-              // ── Bottom padding ──
-              const SliverToBoxAdapter(
-                child: SizedBox(height: AppSpacing.xxl),
+              // ── Daily Insight ──
+              SliverPadding(
+                padding: EdgeInsets.fromLTRB(
+                  padding, AppSpacing.lg, padding, AppSpacing.xxl,
+                ),
+                sliver: const SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SectionHeader(title: AppStrings.dailyInsight),
+                      DailyInsightCard(),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
@@ -98,128 +149,18 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAppBar(BuildContext context, bool isDark) {
-    return Row(
-      children: [
-        // Mini logo
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.md),
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                AppColors.electricBlue,
-                AppColors.electricBlueDark,
-              ],
-            ),
+  void _showPlaceholder(BuildContext context, String feature) {
+    ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(
+        SnackBar(
+          content: Text('$feature — ${AppStrings.comingSoon}'),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
-          child: const Center(
-            child: Text(
-              'LP',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w800,
-                color: AppColors.white,
-                letterSpacing: -0.5,
-              ),
-            ),
-          ),
+          duration: const Duration(seconds: 2),
         ),
-        const SizedBox(width: AppSpacing.sm),
-        Text(
-          AppStrings.appName,
-          style: context.textTheme.titleLarge,
-        ),
-        const Spacer(),
-        IconButton(
-          onPressed: () {},
-          icon: Icon(
-            isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
-            color: isDark ? AppColors.softGray : AppColors.gray600,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildGreeting(BuildContext context, DateTime now) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '${now.greetingPrefix}! 👋',
-          style: context.textTheme.displayMedium,
-        ),
-        const SizedBox(height: AppSpacing.xs),
-        Text(
-          AppStrings.dashboardSubtitle,
-          style: context.textTheme.bodyMedium?.copyWith(fontSize: 15),
-        ),
-      ],
-    );
-  }
-}
-
-/// Placeholder card for future features — non-interactive.
-class _FeatureCard extends StatelessWidget {
-  const _FeatureCard({required this.icon, required this.label});
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = context.theme.brightness == Brightness.dark;
-
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        color: isDark ? AppColors.cardDark : AppColors.cardLight,
-        border: isDark
-            ? Border.all(
-                color: AppColors.surfaceDarkElevated,
-              )
-            : Border.all(color: AppColors.gray200),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppRadius.md),
-              color: AppColors.electricBlue.withValues(alpha: isDark ? 0.12 : 0.08),
-            ),
-            child: Icon(
-              icon,
-              color: AppColors.electricBlue.withValues(alpha: 0.6),
-              size: 24,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            label,
-            style: context.textTheme.labelMedium?.copyWith(
-              color: isDark
-                  ? AppColors.softGray.withValues(alpha: 0.7)
-                  : AppColors.gray500,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            AppStrings.comingSoon,
-            style: context.textTheme.bodySmall?.copyWith(
-              fontSize: 10,
-              color: isDark
-                  ? AppColors.softGray.withValues(alpha: 0.4)
-                  : AppColors.gray400,
-            ),
-          ),
-        ],
-      ),
-    );
+      );
   }
 }
