@@ -11,7 +11,8 @@ class ActivityScreen extends StatelessWidget {
     return const PlaceholderScreen(
       title: AppStrings.activity,
       icon: Icons.timeline_rounded,
-      description: 'Track your productivity, view history, and see insights '
+      description:
+          'Track your productivity, view history, and see insights '
           'about your daily activities.',
     );
   }

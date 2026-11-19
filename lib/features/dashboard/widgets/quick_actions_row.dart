@@ -6,11 +6,7 @@ import '../../../shared/widgets/icon_container.dart';
 
 /// Single quick action item.
 class QuickActionData {
-  const QuickActionData({
-    required this.label,
-    required this.icon,
-    this.color,
-  });
+  const QuickActionData({required this.label, required this.icon, this.color});
   final String label;
   final IconData icon;
   final Color? color;
@@ -18,11 +14,7 @@ class QuickActionData {
 
 /// Horizontal scrollable quick-action row.
 class QuickActionsRow extends StatelessWidget {
-  const QuickActionsRow({
-    super.key,
-    required this.actions,
-    this.onTap,
-  });
+  const QuickActionsRow({super.key, required this.actions, this.onTap});
 
   final List<QuickActionData> actions;
   final void Function(int index)? onTap;
@@ -35,7 +27,8 @@ class QuickActionsRow extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.zero,
         itemCount: actions.length,
-        separatorBuilder: (context, index) => const SizedBox(width: AppSpacing.md),
+        separatorBuilder: (context, index) =>
+            const SizedBox(width: AppSpacing.md),
         itemBuilder: (context, i) => _QuickActionItem(
           data: actions[i],
           onTap: onTap != null ? () => onTap!(i) : null,
@@ -63,7 +56,9 @@ class _QuickActionItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.lg),
           color: isDark ? AppColors.cardDark : AppColors.cardLight,
           border: Border.all(
-            color: isDark ? AppColors.cardDarkBorder : AppColors.cardLightBorder,
+            color: isDark
+                ? AppColors.cardDarkBorder
+                : AppColors.cardLightBorder,
             width: 0.5,
           ),
         ),

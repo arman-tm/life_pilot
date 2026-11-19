@@ -11,7 +11,8 @@ class AssistantScreen extends StatelessWidget {
     return const PlaceholderScreen(
       title: AppStrings.assistant,
       icon: Icons.auto_awesome_rounded,
-      description: 'Your AI-powered personal assistant will be available here. '
+      description:
+          'Your AI-powered personal assistant will be available here. '
           'Chat, ask questions, and get intelligent recommendations.',
     );
   }

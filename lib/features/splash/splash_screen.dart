@@ -31,10 +31,7 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this,
       duration: const Duration(milliseconds: 1000),
     );
-    _logoFade = CurvedAnimation(
-      parent: _logoController,
-      curve: Curves.easeOut,
-    );
+    _logoFade = CurvedAnimation(parent: _logoController, curve: Curves.easeOut);
     _logoScale = Tween<double>(begin: 0.8, end: 1.0).animate(
       CurvedAnimation(parent: _logoController, curve: Curves.easeOutBack),
     );
@@ -48,13 +45,13 @@ class _SplashScreenState extends State<SplashScreen>
       parent: _taglineController,
       curve: Curves.easeOut,
     );
-    _taglineSlide = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _taglineController,
-      curve: Curves.easeOutCubic,
-    ));
+    _taglineSlide = Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _taglineController,
+            curve: Curves.easeOutCubic,
+          ),
+        );
 
     _startSequence();
   }
@@ -66,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen>
     _taglineController.forward();
     await Future.delayed(AppDurations.splash);
     if (mounted) {
-      context.go(RoutePaths.onboarding);
+      context.go(RoutePaths.login);
     }
   }
 
@@ -87,10 +84,7 @@ class _SplashScreenState extends State<SplashScreen>
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              AppColors.darkNavy,
-              AppColors.deepBlack,
-            ],
+            colors: [AppColors.darkNavy, AppColors.deepBlack],
           ),
         ),
         child: Center(
@@ -100,10 +94,7 @@ class _SplashScreenState extends State<SplashScreen>
               // ── Animated Logo ──
               ScaleTransition(
                 scale: _logoScale,
-                child: FadeTransition(
-                  opacity: _logoFade,
-                  child: _buildLogo(),
-                ),
+                child: FadeTransition(opacity: _logoFade, child: _buildLogo()),
               ),
               const SizedBox(height: AppSpacing.lg),
 
@@ -115,10 +106,10 @@ class _SplashScreenState extends State<SplashScreen>
                   child: Text(
                     AppStrings.tagline,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.softGray,
-                          letterSpacing: 1.5,
-                          fontSize: 13,
-                        ),
+                      color: AppColors.softGray,
+                      letterSpacing: 1.5,
+                      fontSize: 13,
+                    ),
                   ),
                 ),
               ),
@@ -142,10 +133,7 @@ class _SplashScreenState extends State<SplashScreen>
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                AppColors.electricBlue,
-                AppColors.electricBlueDark,
-              ],
+              colors: [AppColors.electricBlue, AppColors.electricBlueDark],
             ),
             boxShadow: [
               BoxShadow(

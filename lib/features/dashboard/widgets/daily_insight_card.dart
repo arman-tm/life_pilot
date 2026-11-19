@@ -21,14 +21,8 @@ class DailyInsightCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: isDark
-              ? [
-                  AppColors.surfaceDarkElevated,
-                  AppColors.cardDark,
-                ]
-              : [
-                  AppColors.white,
-                  AppColors.gray50,
-                ],
+              ? [AppColors.surfaceDarkElevated, AppColors.cardDark]
+              : [AppColors.white, AppColors.gray50],
         ),
         border: Border.all(
           color: isDark ? AppColors.cardDarkBorder : AppColors.cardLightBorder,

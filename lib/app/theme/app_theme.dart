@@ -47,6 +47,62 @@ abstract final class AppTheme {
           side: const BorderSide(color: AppColors.cardDarkBorder, width: 0.5),
         ),
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.cardDark,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.md,
+        ),
+        hintStyle: GoogleFonts.inter(
+          fontSize: 14,
+          color: AppColors.softGray.withValues(alpha: 0.5),
+        ),
+        labelStyle: GoogleFonts.inter(fontSize: 14, color: AppColors.softGray),
+        prefixIconColor: AppColors.softGray,
+        suffixIconColor: AppColors.softGray,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          borderSide: const BorderSide(
+            color: AppColors.cardDarkBorder,
+            width: 1,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          borderSide: const BorderSide(
+            color: AppColors.cardDarkBorder,
+            width: 1,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          borderSide: const BorderSide(
+            color: AppColors.electricBlue,
+            width: 1.5,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          borderSide: const BorderSide(color: AppColors.error, width: 1),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          borderSide: const BorderSide(color: AppColors.error, width: 1.5),
+        ),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return AppColors.electricBlue;
+          }
+          return Colors.transparent;
+        }),
+        side: const BorderSide(color: AppColors.softGray, width: 1.5),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xs),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.electricBlue,
@@ -151,6 +207,59 @@ abstract final class AppTheme {
           side: const BorderSide(color: AppColors.cardLightBorder, width: 0.5),
         ),
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.white,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.md,
+        ),
+        hintStyle: GoogleFonts.inter(fontSize: 14, color: AppColors.gray400),
+        labelStyle: GoogleFonts.inter(fontSize: 14, color: AppColors.gray600),
+        prefixIconColor: AppColors.gray500,
+        suffixIconColor: AppColors.gray500,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          borderSide: const BorderSide(
+            color: AppColors.cardLightBorder,
+            width: 1,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          borderSide: const BorderSide(
+            color: AppColors.cardLightBorder,
+            width: 1,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          borderSide: const BorderSide(
+            color: AppColors.electricBlue,
+            width: 1.5,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          borderSide: const BorderSide(color: AppColors.error, width: 1),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          borderSide: const BorderSide(color: AppColors.error, width: 1.5),
+        ),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return AppColors.electricBlue;
+          }
+          return Colors.transparent;
+        }),
+        side: const BorderSide(color: AppColors.gray400, width: 1.5),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xs),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.electricBlue,
@@ -215,10 +324,12 @@ abstract final class AppTheme {
   // ────────────────────────── TYPOGRAPHY ──────────────────────────
 
   static TextTheme _buildTextTheme(Brightness brightness) {
-    final color =
-        brightness == Brightness.dark ? AppColors.white : AppColors.darkNavy;
-    final muted =
-        brightness == Brightness.dark ? AppColors.softGray : AppColors.gray600;
+    final color = brightness == Brightness.dark
+        ? AppColors.white
+        : AppColors.darkNavy;
+    final muted = brightness == Brightness.dark
+        ? AppColors.softGray
+        : AppColors.gray600;
 
     return TextTheme(
       displayLarge: GoogleFonts.inter(

@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/activity/activity_screen.dart';
 import '../../features/assistant/assistant_screen.dart';
+import '../../features/auth/presentation/forgot_password_screen.dart';
+import '../../features/auth/presentation/login_screen.dart';
+import '../../features/auth/presentation/register_screen.dart';
 import '../../features/dashboard/dashboard_screen.dart';
 import '../../features/onboarding/onboarding_screen.dart';
 import '../../features/planner/planner_screen.dart';
@@ -15,6 +18,9 @@ import '../../features/splash/splash_screen.dart';
 abstract final class RoutePaths {
   static const splash = '/';
   static const onboarding = '/onboarding';
+  static const login = '/login';
+  static const register = '/register';
+  static const forgotPassword = '/forgot-password';
   static const dashboard = '/dashboard';
   static const assistant = '/assistant';
   static const planner = '/planner';
@@ -47,6 +53,57 @@ final routerProvider = Provider<GoRouter>((ref) {
               FadeTransition(opacity: animation, child: child),
         ),
       ),
+      GoRoute(
+        path: RoutePaths.login,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const LoginScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
+      ),
+      GoRoute(
+        path: RoutePaths.register,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const RegisterScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(1, 0),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeOutCubic,
+                      ),
+                    ),
+                child: child,
+              ),
+        ),
+      ),
+      GoRoute(
+        path: RoutePaths.forgotPassword,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const ForgotPasswordScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(0, 0.08),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeOutCubic,
+                      ),
+                    ),
+                child: FadeTransition(opacity: animation, child: child),
+              ),
+        ),
+      ),
 
       // ── Shell with bottom navigation ──
       StatefulShellRoute.indexedStack(
@@ -57,9 +114,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: RoutePaths.dashboard,
-                pageBuilder: (_, state) => const NoTransitionPage(
-                  child: DashboardScreen(),
-                ),
+                pageBuilder: (_, state) =>
+                    const NoTransitionPage(child: DashboardScreen()),
               ),
             ],
           ),
@@ -67,9 +123,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: RoutePaths.assistant,
-                pageBuilder: (_, state) => const NoTransitionPage(
-                  child: AssistantScreen(),
-                ),
+                pageBuilder: (_, state) =>
+                    const NoTransitionPage(child: AssistantScreen()),
               ),
             ],
           ),
@@ -77,9 +132,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: RoutePaths.planner,
-                pageBuilder: (_, state) => const NoTransitionPage(
-                  child: PlannerScreen(),
-                ),
+                pageBuilder: (_, state) =>
+                    const NoTransitionPage(child: PlannerScreen()),
               ),
             ],
           ),
@@ -87,9 +141,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: RoutePaths.activity,
-                pageBuilder: (_, state) => const NoTransitionPage(
-                  child: ActivityScreen(),
-                ),
+                pageBuilder: (_, state) =>
+                    const NoTransitionPage(child: ActivityScreen()),
               ),
             ],
           ),
@@ -97,9 +150,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: RoutePaths.profile,
-                pageBuilder: (_, state) => const NoTransitionPage(
-                  child: ProfileScreen(),
-                ),
+                pageBuilder: (_, state) =>
+                    const NoTransitionPage(child: ProfileScreen()),
               ),
             ],
           ),

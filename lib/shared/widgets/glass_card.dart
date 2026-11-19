@@ -42,9 +42,6 @@ class GlassCard extends StatelessWidget {
 
     if (onTap == null) return content;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: content,
-    );
+    return GestureDetector(onTap: onTap, child: content);
   }
 }

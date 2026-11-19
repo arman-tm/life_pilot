@@ -74,7 +74,9 @@ class MainShell extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(
-            color: isDark ? AppColors.cardDarkBorder : AppColors.cardLightBorder,
+            color: isDark
+                ? AppColors.cardDarkBorder
+                : AppColors.cardLightBorder,
             width: 0.5,
           ),
         ),
@@ -94,12 +96,17 @@ class MainShell extends StatelessWidget {
       selectedIndex: navigationShell.currentIndex,
       onDestinationSelected: _onTap,
       labelType: NavigationRailLabelType.all,
-      backgroundColor:
-          isDark ? AppColors.surfaceDark : AppColors.surfaceLightElevated,
-      indicatorColor:
-          AppColors.electricBlue.withValues(alpha: isDark ? 0.15 : 0.1),
+      backgroundColor: isDark
+          ? AppColors.surfaceDark
+          : AppColors.surfaceLightElevated,
+      indicatorColor: AppColors.electricBlue.withValues(
+        alpha: isDark ? 0.15 : 0.1,
+      ),
       leading: Padding(
-        padding: const EdgeInsets.only(top: AppSpacing.md, bottom: AppSpacing.lg),
+        padding: const EdgeInsets.only(
+          top: AppSpacing.md,
+          bottom: AppSpacing.lg,
+        ),
         child: Container(
           width: 40,
           height: 40,
@@ -108,10 +115,7 @@ class MainShell extends StatelessWidget {
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                AppColors.blueGradientStart,
-                AppColors.blueGradientEnd,
-              ],
+              colors: [AppColors.blueGradientStart, AppColors.blueGradientEnd],
             ),
           ),
           child: const Center(
