@@ -11,7 +11,8 @@ class PlannerScreen extends StatelessWidget {
     return const PlaceholderScreen(
       title: AppStrings.planner,
       icon: Icons.calendar_month_rounded,
-      description: 'AI-assisted planning, calendar, and task management '
+      description:
+          'AI-assisted planning, calendar, and task management '
           'will be available here.',
     );
   }

@@ -39,14 +39,22 @@ class DashboardScreen extends ConsumerWidget {
             slivers: [
               // ── Header ──
               SliverPadding(
-                padding: EdgeInsets.fromLTRB(padding, AppSpacing.md, padding, 0),
+                padding: EdgeInsets.fromLTRB(
+                  padding,
+                  AppSpacing.md,
+                  padding,
+                  0,
+                ),
                 sliver: const SliverToBoxAdapter(child: DashboardHeader()),
               ),
 
               // ── Greeting / Hero ──
               SliverPadding(
                 padding: EdgeInsets.fromLTRB(
-                  padding, AppSpacing.lg, padding, 0,
+                  padding,
+                  AppSpacing.lg,
+                  padding,
+                  0,
                 ),
                 sliver: const SliverToBoxAdapter(child: GreetingSection()),
               ),
@@ -54,11 +62,15 @@ class DashboardScreen extends ConsumerWidget {
               // ── AI Assistant Card ──
               SliverPadding(
                 padding: EdgeInsets.fromLTRB(
-                  padding, AppSpacing.lg, padding, 0,
+                  padding,
+                  AppSpacing.lg,
+                  padding,
+                  0,
                 ),
                 sliver: SliverToBoxAdapter(
                   child: AIAssistantCard(
-                    onTap: () => _showPlaceholder(context, AppStrings.assistant),
+                    onTap: () =>
+                        _showPlaceholder(context, AppStrings.assistant),
                   ),
                 ),
               ),
@@ -66,7 +78,10 @@ class DashboardScreen extends ConsumerWidget {
               // ── Quick Actions ──
               SliverPadding(
                 padding: EdgeInsets.fromLTRB(
-                  padding, AppSpacing.lg, padding, 0,
+                  padding,
+                  AppSpacing.lg,
+                  padding,
+                  0,
                 ),
                 sliver: SliverToBoxAdapter(
                   child: Column(
@@ -114,7 +129,10 @@ class DashboardScreen extends ConsumerWidget {
               // ── Today's Overview ──
               SliverPadding(
                 padding: EdgeInsets.fromLTRB(
-                  padding, AppSpacing.lg, padding, 0,
+                  padding,
+                  AppSpacing.lg,
+                  padding,
+                  0,
                 ),
                 sliver: const SliverToBoxAdapter(
                   child: Column(
@@ -130,7 +148,10 @@ class DashboardScreen extends ConsumerWidget {
               // ── Daily Insight ──
               SliverPadding(
                 padding: EdgeInsets.fromLTRB(
-                  padding, AppSpacing.lg, padding, AppSpacing.xxl,
+                  padding,
+                  AppSpacing.lg,
+                  padding,
+                  AppSpacing.xxl,
                 ),
                 sliver: const SliverToBoxAdapter(
                   child: Column(

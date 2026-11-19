@@ -25,10 +25,7 @@ class DashboardHeader extends ConsumerWidget {
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                AppColors.blueGradientStart,
-                AppColors.blueGradientEnd,
-              ],
+              colors: [AppColors.blueGradientStart, AppColors.blueGradientEnd],
             ),
             boxShadow: [
               BoxShadow(
@@ -63,10 +60,7 @@ class DashboardHeader extends ConsumerWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              Text(
-                now.formattedDate,
-                style: context.textTheme.bodySmall,
-              ),
+              Text(now.formattedDate, style: context.textTheme.bodySmall),
             ],
           ),
         ),

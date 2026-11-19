@@ -59,7 +59,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
-  void _finish() => context.go(RoutePaths.dashboard);
+  void _finish() => context.go(RoutePaths.login);
 
   @override
   void dispose() {
@@ -178,11 +178,7 @@ class _PageContent extends StatelessWidget {
                 color: AppColors.electricBlue.withValues(alpha: 0.2),
               ),
             ),
-            child: Icon(
-              page.icon,
-              size: 52,
-              color: AppColors.electricBlue,
-            ),
+            child: Icon(page.icon, size: 52, color: AppColors.electricBlue),
           ),
           const SizedBox(height: AppSpacing.xxl),
 

@@ -33,7 +33,9 @@ class AIAssistantCard extends StatelessWidget {
                   ],
           ),
           border: Border.all(
-            color: AppColors.electricBlue.withValues(alpha: isDark ? 0.2 : 0.12),
+            color: AppColors.electricBlue.withValues(
+              alpha: isDark ? 0.2 : 0.12,
+            ),
           ),
         ),
         child: Column(
