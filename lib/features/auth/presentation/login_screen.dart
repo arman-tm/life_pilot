@@ -11,7 +11,7 @@ import 'controllers/auth_controller.dart';
 import 'widgets/auth_header.dart';
 import 'widgets/custom_text_field.dart';
 
-/// Screen allowing users to sign in with simulated credentials (Phase 03A Demo).
+/// Screen allowing users to sign in with Firebase Authentication.
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
@@ -21,8 +21,8 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController(text: 'demo@lifepilot.ai');
-  final _passwordController = TextEditingController(text: 'PilotPass123');
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   void dispose() {
@@ -241,7 +241,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       const SizedBox(height: AppSpacing.md),
 
-                      // ── Demo Notice Pill ──
+                      // ── Firebase Notice Pill ──
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: AppSpacing.md,
@@ -259,15 +259,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             width: 0.5,
                           ),
                         ),
-                        child: Text(
-                          AppStrings.demoNotice,
-                          style: context.textTheme.labelSmall?.copyWith(
-                            color: isDark
-                                ? AppColors.softGray.withValues(alpha: 0.7)
-                                : AppColors.gray600,
-                            fontSize: 11,
-                          ),
-                          textAlign: TextAlign.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.verified_user_outlined,
+                              size: 14,
+                              color: AppColors.electricBlue,
+                            ),
+                            const SizedBox(width: AppSpacing.xs),
+                            Flexible(
+                              child: Text(
+                                AppStrings.firebaseNotice,
+                                style: context.textTheme.labelSmall?.copyWith(
+                                  color: isDark
+                                      ? AppColors.softGray.withValues(
+                                          alpha: 0.8,
+                                        )
+                                      : AppColors.gray600,
+                                  fontSize: 11,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: AppSpacing.xl),
