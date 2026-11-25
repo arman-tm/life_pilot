@@ -1,5 +1,5 @@
 /// Base failure class for domain-level error handling.
-sealed class Failure {
+abstract class Failure {
   const Failure(this.message);
   final String message;
 
@@ -12,7 +12,7 @@ class UnexpectedFailure extends Failure {
   const UnexpectedFailure([super.message = 'An unexpected error occurred.']);
 }
 
-/// Network-related failures (for future use).
+/// Network-related failures.
 class NetworkFailure extends Failure {
   const NetworkFailure([super.message = 'Network error. Please try again.']);
 }

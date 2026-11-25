@@ -11,7 +11,7 @@ import 'controllers/auth_controller.dart';
 import 'widgets/auth_header.dart';
 import 'widgets/custom_text_field.dart';
 
-/// Screen allowing users to request a password reset (Phase 03A Demo).
+/// Screen allowing users to request a password reset via Firebase.
 class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({super.key});
 
@@ -122,6 +122,41 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           ),
           const SizedBox(height: AppSpacing.xl),
 
+          // ── Error Banner (if any) ──
+          if (authState.errorMessage != null) ...[
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              decoration: BoxDecoration(
+                color: AppColors.error.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                border: Border.all(
+                  color: AppColors.error.withValues(alpha: 0.3),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.error_outline_rounded,
+                    color: AppColors.error,
+                    size: 20,
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
+                  Expanded(
+                    child: Text(
+                      authState.errorMessage!,
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: AppColors.error,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+          ],
+
           // ── Email Field ──
           CustomTextField(
             controller: _emailController,
@@ -231,7 +266,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         ),
         const SizedBox(height: AppSpacing.md),
 
-        // ── Demo Alert Pill ──
+        // ── Feedback Pill ──
         Container(
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
@@ -243,25 +278,12 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   : AppColors.cardLightBorder,
             ),
           ),
-          child: Column(
-            children: [
-              Text(
-                'DEMO SIMULATION',
-                style: context.textTheme.labelSmall?.copyWith(
-                  color: AppColors.electricBlue,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.8,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                AppStrings.checkInbox,
-                style: context.textTheme.bodySmall?.copyWith(
-                  color: isDark ? AppColors.softGray : AppColors.gray600,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+          child: Text(
+            AppStrings.checkInbox,
+            style: context.textTheme.bodySmall?.copyWith(
+              color: isDark ? AppColors.softGray : AppColors.gray600,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
         const SizedBox(height: AppSpacing.xl),

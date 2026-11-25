@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/activity/activity_screen.dart';
 import '../../features/assistant/assistant_screen.dart';
+import '../../features/auth/presentation/controllers/auth_controller.dart';
 import '../../features/auth/presentation/forgot_password_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
@@ -28,11 +29,63 @@ abstract final class RoutePaths {
   static const profile = '/profile';
 }
 
-/// GoRouter provider — managed by Riverpod.
+/// Listenable bridging Riverpod auth state changes to GoRouter's refreshListenable.
+class RouterRefreshNotifier extends ChangeNotifier {
+  RouterRefreshNotifier(this._ref) {
+    _ref.listen<AuthState>(authControllerProvider, (previous, next) {
+      if (previous?.isAuthenticated != next.isAuthenticated ||
+          previous?.status != next.status) {
+        notifyListeners();
+      }
+    });
+  }
+
+  final Ref _ref;
+}
+
+final routerRefreshNotifierProvider = Provider<RouterRefreshNotifier>((ref) {
+  return RouterRefreshNotifier(ref);
+});
+
+/// GoRouter provider with route protection and session redirection.
 final routerProvider = Provider<GoRouter>((ref) {
+  final refreshNotifier = ref.watch(routerRefreshNotifierProvider);
+
   return GoRouter(
     initialLocation: RoutePaths.splash,
     debugLogDiagnostics: false,
+    refreshListenable: refreshNotifier,
+    redirect: (context, state) {
+      final authState = ref.read(authControllerProvider);
+      final currentLoc = state.uri.path;
+
+      final isSplash = currentLoc == RoutePaths.splash;
+      final isOnboarding = currentLoc == RoutePaths.onboarding;
+      final isAuthRoute =
+          currentLoc == RoutePaths.login ||
+          currentLoc == RoutePaths.register ||
+          currentLoc == RoutePaths.forgotPassword;
+
+      // Allow splash and onboarding to render without interference
+      if (isSplash || isOnboarding) {
+        return null;
+      }
+
+      // If user is authenticated, redirect away from auth screens to dashboard
+      if (authState.isAuthenticated) {
+        if (isAuthRoute) {
+          return RoutePaths.dashboard;
+        }
+        return null;
+      }
+
+      // If user is not authenticated and tries to access protected areas, redirect to login
+      if (!authState.isAuthenticated && !isAuthRoute) {
+        return RoutePaths.login;
+      }
+
+      return null;
+    },
     routes: [
       // ── Standalone routes (no shell) ──
       GoRoute(

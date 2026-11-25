@@ -34,9 +34,10 @@ abstract final class AppStrings {
   static const signingIn = 'Signing in...';
   static const dontHaveAccount = "Don't have an account? ";
   static const signUp = 'Sign Up';
+  static const authBadge = 'FIREBASE AUTH';
   static const demoBadge = 'DEMO';
-  static const demoNotice =
-      'DEMO MODE — Authentication is simulated. Tap Sign In to enter.';
+  static const firebaseNotice =
+      'Secured by Firebase Authentication. Sign in with your registered account.';
 
   // ── Register ──
   static const createAccount = 'Create Account';
@@ -56,14 +57,14 @@ abstract final class AppStrings {
   // ── Forgot Password ──
   static const resetPassword = 'Reset Password';
   static const resetSubtitle =
-      "Enter the email associated with your account and we'll send a simulated recovery link.";
+      "Enter the email associated with your account and we'll send a password recovery link.";
   static const sendResetLink = 'Send Reset Link';
   static const sendingResetLink = 'Sending Link...';
   static const resetLinkSent = 'Reset Link Dispatched!';
   static const resetLinkSentDesc =
-      'A simulated reset link has been dispatched to';
+      'A password recovery link has been dispatched to';
   static const checkInbox =
-      'Check your inbox or try signing in again once reset.';
+      'Check your inbox or try signing in again once you have reset your password.';
   static const backToSignIn = 'Back to Sign In';
   static const resendLink = 'Resend Link';
 

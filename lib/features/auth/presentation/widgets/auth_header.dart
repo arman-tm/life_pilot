@@ -10,12 +10,14 @@ class AuthHeader extends StatelessWidget {
     super.key,
     required this.title,
     required this.subtitle,
-    this.showDemoBadge = true,
+    this.badgeText = AppStrings.authBadge,
+    this.showBadge = true,
   });
 
   final String title;
   final String subtitle;
-  final bool showDemoBadge;
+  final String badgeText;
+  final bool showBadge;
 
   @override
   Widget build(BuildContext context) {
@@ -66,12 +68,12 @@ class AuthHeader extends StatelessWidget {
                 letterSpacing: -0.2,
               ),
             ),
-            if (showDemoBadge) ...[
+            if (showBadge) ...[
               const SizedBox(width: AppSpacing.sm),
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.xs + 2,
-                  vertical: 2,
+                  horizontal: AppSpacing.xs + 3,
+                  vertical: 3,
                 ),
                 decoration: BoxDecoration(
                   color: AppColors.electricBlue.withValues(alpha: 0.12),
@@ -82,7 +84,7 @@ class AuthHeader extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  AppStrings.demoBadge,
+                  badgeText,
                   style: context.textTheme.labelSmall?.copyWith(
                     color: AppColors.electricBlue,
                     fontSize: 9,
