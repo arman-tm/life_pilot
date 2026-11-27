@@ -1,0 +1,169 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: {userId} (Must match the Firebase Auth UID)
+    //
+    // Fields:
+    //   - uid: string (required, immutable) - Must match document ID and request.auth.uid (max 128 chars)
+    //   - email: string (required) - User email address (RFC 5321 max 254 chars, valid email format)
+    //   - displayName: string (required) - Full user display name (1-100 characters)
+    //   - photoUrl: string | null (optional) - Avatar image URL (max 2048 chars, valid URL format if present)
+    //   - createdAt: timestamp (required, immutable) - Timestamp when the profile document was created
+    //   - updatedAt: timestamp (required) - Timestamp when the profile document was last updated
+    //   - bio: string | null (optional) - User biography / about text (max 500 chars)
+    //   - phone: string | null (optional) - User phone number (max 25 characters)
+    //   - preferences: map | null (optional) - User preferences and settings map (max 50 entries)
+    //
+    // Security & Business Invariants:
+    //   1. Default Deny: All collections and subcollections deny read/write by default.
+    //   2. Owner-Only Access: Only the authenticated owner (request.auth.uid == userId) can read or modify their profile.
+    //   3. Strict Schema Enforcement: No undocumented or arbitrary fields allowed (Schema Pollution prevention).
+    //   4. Immutability: The 'uid' and 'createdAt' fields cannot be changed after initial document creation.
+    //   5. DoS Prevention: Strict bounds on all string lengths and map sizes to prevent resource exhaustion attacks.
+    //   6. PII Lockdown: User profile data containing private info (email, phone) is never exposed to other users.
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    /// Checks if the request is from an authenticated user
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    /// Checks if the authenticated user is the owner of the document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    /// Validates that all required fields are present in the document
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    /// Validates that no extra/unauthorized fields are present in the document
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    /// Validates standard email address format and length constraints
+    function isValidEmail(email) {
+      return email is string &&
+        email.size() > 3 &&
+        email.size() <= 254 &&
+        email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    /// Validates HTTP/HTTPS URL format and length constraints
+    function isValidUrl(url) {
+      return url is string &&
+        url.size() <= 2048 &&
+        (url.matches("^https://.*") || url.matches("^http://.*"));
+    }
+
+    /// Validates ISO 8601 date string format (YYYY-MM-DDTHH:MM:SS...)
+    function isValidDateString(dateStr) {
+      return dateStr is string &&
+        dateStr.size() <= 40 &&
+        dateStr.matches("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.*");
+    }
+
+    /// Validates that a timestamp field is either a native Firestore Timestamp or a valid ISO-8601 string
+    function isValidTimestamp(val) {
+      return val is timestamp || (val is string && isValidDateString(val));
+    }
+
+    /// Validates optional photoUrl field (absent, null, empty string, or valid URL)
+    function isValidPhotoUrl(data) {
+      return !('photoUrl' in data) ||
+        data.photoUrl == null ||
+        (data.photoUrl is string &&
+         data.photoUrl.size() <= 2048 &&
+         (data.photoUrl.size() == 0 || isValidUrl(data.photoUrl)));
+    }
+
+    /// Validates optional bio field (absent, null, or bounded string)
+    function isValidBio(data) {
+      return !('bio' in data) ||
+        data.bio == null ||
+        (data.bio is string && data.bio.size() <= 500);
+    }
+
+    /// Validates optional phone field (absent, null, or bounded string)
+    function isValidPhone(data) {
+      return !('phone' in data) ||
+        data.phone == null ||
+        (data.phone is string && data.phone.size() <= 25);
+    }
+
+    /// Validates optional preferences map (absent, null, or bounded map)
+    function isValidPreferences(data) {
+      return !('preferences' in data) ||
+        data.preferences == null ||
+        (data.preferences is map && data.preferences.size() <= 50);
+    }
+
+    /// Enforces that immutable fields ('uid' and 'createdAt') remain identical on update
+    function areImmutableFieldsUnchanged() {
+      return request.resource.data.uid == resource.data.uid &&
+        request.resource.data.createdAt == resource.data.createdAt;
+    }
+
+    // ===============================================================
+    // Domain Validator (Validator Function Pattern)
+    // Used in BOTH create and update rules to eliminate Update Bypass
+    // ===============================================================
+    function isValidUser(data, userId) {
+      return hasRequiredFields(['uid', 'email', 'displayName', 'createdAt', 'updatedAt']) &&
+        hasOnlyAllowedFields(['uid', 'email', 'displayName', 'photoUrl', 'createdAt', 'updatedAt', 'bio', 'phone', 'preferences']) &&
+        data.uid is string &&
+        data.uid == userId &&
+        data.uid == request.auth.uid &&
+        data.uid.size() > 0 &&
+        data.uid.size() <= 128 &&
+        data.displayName is string &&
+        data.displayName.size() > 0 &&
+        data.displayName.size() <= 100 &&
+        isValidEmail(data.email) &&
+        isValidTimestamp(data.createdAt) &&
+        isValidTimestamp(data.updatedAt) &&
+        isValidPhotoUrl(data) &&
+        isValidBio(data) &&
+        isValidPhone(data) &&
+        isValidPreferences(data);
+    }
+
+    // ===============================================================
+    // Collection Rules
+    // ===============================================================
+
+    // Root Default Deny: Deny all reads and writes across all other paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // User Profile Documents
+    match /users/{userId} {
+      // Owner can read their own profile (strictly private to prevent PII leaks)
+      allow read: if isOwner(userId);
+
+      // Authenticated user can create their own profile document with valid initial data
+      allow create: if isOwner(userId) && isValidUser(request.resource.data, userId);
+
+      // Authenticated user can update their own profile, preserving immutability of uid & createdAt
+      allow update: if isOwner(userId) && areImmutableFieldsUnchanged() && isValidUser(request.resource.data, userId);
+
+      // Authenticated user can delete their own profile
+      allow delete: if isOwner(userId);
+    }
+  }
+}

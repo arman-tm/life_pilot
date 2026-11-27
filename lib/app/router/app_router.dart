@@ -11,6 +11,9 @@ import '../../features/auth/presentation/register_screen.dart';
 import '../../features/dashboard/dashboard_screen.dart';
 import '../../features/onboarding/onboarding_screen.dart';
 import '../../features/planner/planner_screen.dart';
+import '../../features/profile/presentation/account_settings_screen.dart';
+import '../../features/profile/presentation/change_password_screen.dart';
+import '../../features/profile/presentation/edit_profile_screen.dart';
 import '../../features/profile/profile_screen.dart';
 import '../../features/shell/main_shell.dart';
 import '../../features/splash/splash_screen.dart';
@@ -27,6 +30,9 @@ abstract final class RoutePaths {
   static const planner = '/planner';
   static const activity = '/activity';
   static const profile = '/profile';
+  static const editProfile = '/profile/edit';
+  static const settings = '/profile/settings';
+  static const changePassword = '/profile/change-password';
 }
 
 /// Listenable bridging Riverpod auth state changes to GoRouter's refreshListenable.
@@ -209,6 +215,68 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
         ],
+      ),
+
+      // ── Profile sub-pages (standalone, pushed above shell) ──
+      GoRoute(
+        path: RoutePaths.editProfile,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const EditProfileScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1, 0),
+                  end: Offset.zero,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOutCubic,
+                  ),
+                ),
+                child: child,
+              ),
+        ),
+      ),
+      GoRoute(
+        path: RoutePaths.settings,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const AccountSettingsScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1, 0),
+                  end: Offset.zero,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOutCubic,
+                  ),
+                ),
+                child: child,
+              ),
+        ),
+      ),
+      GoRoute(
+        path: RoutePaths.changePassword,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const ChangePasswordScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0, 0.08),
+                  end: Offset.zero,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOutCubic,
+                  ),
+                ),
+                child: FadeTransition(opacity: animation, child: child),
+              ),
+        ),
       ),
     ],
   );
